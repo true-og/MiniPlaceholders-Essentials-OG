@@ -1,0 +1,8 @@
+name: MiniPlaceholders-Essentials
+author: NotAlexNoyle
+description: A fork of Essentials.Expansion for MiniPlaceholders
+website: https://github.com/true-og/MiniPlaceholders-Essentials/
+version: '${version}'
+api-version: '${apiVersion}'
+main: net.trueog.miniplaceholdersessentials.EssentialsExpansion
+depend: [Utilities-OG, Essentials]
