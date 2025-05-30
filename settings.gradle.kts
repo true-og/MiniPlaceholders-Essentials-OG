@@ -1,4 +1,4 @@
-rootProject.name = "MiniPlaceholders-Essentials"
+rootProject.name = "MiniPlaceholders-Essentials-OG"
 
 // Run the bootstrap at configuration time.
 val process = ProcessBuilder("sh", "bootstrap.sh")
