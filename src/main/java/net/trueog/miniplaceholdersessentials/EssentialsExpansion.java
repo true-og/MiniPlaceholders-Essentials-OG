@@ -24,16 +24,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class EssentialsExpansion extends JavaPlugin {
 
-	@Override
-	public void onEnable() {
+    @Override
+    public void onEnable() {
 
-		saveDefaultConfig();
+        saveDefaultConfig();
 
-		// Register the hook.
-		new EssentialsHook();
+        // Register the hook.
+        new EssentialsHook();
 
-		getLogger().info(getName() + " v." + getPluginMeta().getVersion() + " has been enabled!");
-
-	}
-
+        getLogger().info(getName() + " v." + getPluginMeta().getVersion() + " has been enabled!");
+    }
 }
