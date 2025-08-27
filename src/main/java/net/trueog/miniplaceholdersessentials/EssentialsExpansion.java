@@ -33,5 +33,7 @@ public class EssentialsExpansion extends JavaPlugin {
         new EssentialsHook();
 
         getLogger().info(getName() + " v." + getPluginMeta().getVersion() + " has been enabled!");
+
     }
+
 }

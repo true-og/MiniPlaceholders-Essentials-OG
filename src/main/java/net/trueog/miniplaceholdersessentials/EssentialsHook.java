@@ -46,7 +46,9 @@ public class EssentialsHook {
         if (canRegister()) {
 
             register();
+
         }
+
     }
 
     /**
@@ -58,6 +60,7 @@ public class EssentialsHook {
 
         return Bukkit.getPluginManager().getPlugin("Essentials") != null
                 && Bukkit.getPluginManager().getPlugin("Essentials").isEnabled();
+
     }
 
     /**
@@ -88,6 +91,7 @@ public class EssentialsHook {
         } else {
 
             return false;
+
         }
 
         // Register all MiniPlaceholders.
@@ -97,6 +101,7 @@ public class EssentialsHook {
         registerWorldPlaceholders();
 
         return true;
+
     }
 
     /**
@@ -106,15 +111,18 @@ public class EssentialsHook {
 
         // baltop_balance_fixed:id
         UtilitiesOG.registerGlobalPlaceholder("essentials_baltop_balance_fixed", args -> {
+
             if (args.size() < 1) {
 
                 return "0";
+
             }
 
             Integer id = Ints.tryParse(args.get(0));
             if (id == null) {
 
                 return "Invalid ID";
+
             }
 
             Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
@@ -122,22 +130,27 @@ public class EssentialsHook {
             if (id >= entries.length || id < 0) {
 
                 return "0";
+
             }
 
             return String.valueOf(entries[id].getBalance().longValue());
+
         });
 
         // baltop_balance_formatted:id
         UtilitiesOG.registerGlobalPlaceholder("essentials_baltop_balance_formatted", args -> {
+
             if (args.size() < 1) {
 
                 return "0";
+
             }
 
             Integer id = Ints.tryParse(args.get(0));
             if (id == null) {
 
                 return "Invalid ID";
+
             }
 
             Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
@@ -146,22 +159,27 @@ public class EssentialsHook {
             if (id >= entries.length || id < 0) {
 
                 return "0";
+
             }
 
             return fixMoney(entries[id].getBalance().doubleValue());
+
         });
 
         // baltop_balance_commas:id
         UtilitiesOG.registerGlobalPlaceholder("essentials_baltop_balance_commas", args -> {
+
             if (args.size() < 1) {
 
                 return "0";
+
             }
 
             Integer id = Ints.tryParse(args.get(0));
             if (id == null) {
 
                 return "Invalid ID";
+
             }
 
             Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
@@ -169,22 +187,27 @@ public class EssentialsHook {
             if (id >= entries.length || id < 0) {
 
                 return "0";
+
             }
 
             return format.format(entries[id].getBalance().doubleValue());
+
         });
 
         // baltop_balance:id
         UtilitiesOG.registerGlobalPlaceholder("essentials_baltop_balance", args -> {
+
             if (args.size() < 1) {
 
                 return "0";
+
             }
 
             Integer id = Ints.tryParse(args.get(0));
             if (id == null) {
 
                 return "Invalid ID";
+
             }
 
             Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
@@ -194,22 +217,27 @@ public class EssentialsHook {
             if (id >= entries.length || id < 0) {
 
                 return "0";
+
             }
 
             return String.valueOf(entries[id].getBalance().doubleValue());
+
         });
 
         // baltop_player:id
         UtilitiesOG.registerGlobalPlaceholder("essentials_baltop_player", args -> {
+
             if (args.size() < 1) {
 
                 return "";
+
             }
 
             Integer id = Ints.tryParse(args.get(0));
             if (id == null) {
 
                 return "Invalid ID";
+
             }
 
             Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
@@ -217,22 +245,29 @@ public class EssentialsHook {
             BalanceTop.Entry[] entries = baltopCache.values().toArray(new BalanceTop.Entry[0]);
 
             if (id >= entries.length || id < 0) {
+
                 return "0";
+
             }
 
             return entries[id].getDisplayName();
+
         });
 
         // baltop_player_stripped:id
         UtilitiesOG.registerGlobalPlaceholder("essentials_baltop_player_stripped", args -> {
+
             if (args.size() < 1) {
+
                 return "";
+
             }
 
             Integer id = Ints.tryParse(args.get(0));
             if (id == null) {
 
                 return "Invalid ID";
+
             }
 
             Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
@@ -241,28 +276,35 @@ public class EssentialsHook {
             if (id >= entries.length || id < 0) {
 
                 return "0";
+
             }
 
             String displayName = entries[id].getDisplayName();
 
             return UtilitiesOG.stripFormatting(displayName);
+
         });
 
         // baltop_rank (requires player context)
         UtilitiesOG.registerAudiencePlaceholder("essentials_baltop_rank", player -> {
+
             if (player == null) {
 
                 return "";
+
             }
 
             Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
             if (!baltopCache.containsKey(player.getUniqueId())) {
 
                 return "";
+
             }
 
             return String.valueOf(new ArrayList<>(baltopCache.keySet()).indexOf(player.getUniqueId()) + 1);
+
         });
+
     }
 
     /**
@@ -272,9 +314,11 @@ public class EssentialsHook {
 
         // tp_cooldown
         UtilitiesOG.registerAudiencePlaceholder("essentials_tp_cooldown", player -> {
+
             if (player == null) {
 
                 return "0";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
@@ -285,16 +329,20 @@ public class EssentialsHook {
             if (diff < cooldown) {
 
                 return String.valueOf((int) (cooldown - diff));
+
             }
 
             return "0";
+
         });
 
         // kit_last_use:kitname
         UtilitiesOG.registerAudiencePlaceholder("essentials_kit_last_use", (player, args) -> {
+
             if (args.size() < 1) {
 
                 return "Invalid kit name";
+
             }
 
             String kitName = args.get(0).toLowerCase();
@@ -306,24 +354,29 @@ public class EssentialsHook {
             } catch (Exception error) {
 
                 return "Invalid kit name";
+
             }
 
             long time = essentials.getUser(player.getUniqueId()).getKitTimestamp(kit.getName());
             if (time == 1 || time <= 0) {
 
                 return "1";
+
             }
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             return dateFormat.format(new Date(time));
+
         });
 
         // kit_is_available:kitname
         UtilitiesOG.registerAudiencePlaceholder("essentials_kit_is_available", (player, args) -> {
+
             if (args.size() < 1) {
 
                 return "false";
+
             }
 
             String kitName = args.get(0).toLowerCase();
@@ -336,6 +389,7 @@ public class EssentialsHook {
             } catch (Exception error) {
 
                 return "false";
+
             }
 
             long time;
@@ -346,16 +400,20 @@ public class EssentialsHook {
             } catch (Exception error) {
 
                 return "false";
+
             }
 
             return time == 0 ? "true" : "false";
+
         });
 
         // kit_time_until_available:kitname
         UtilitiesOG.registerAudiencePlaceholder("essentials_kit_time_until_available", (player, args) -> {
+
             if (args.size() < 1) {
 
                 return "-1";
+
             }
 
             String kitName = args.get(0).toLowerCase();
@@ -368,7 +426,9 @@ public class EssentialsHook {
                 if (kitName.isEmpty()) {
 
                     return "Invalid kit name";
+
                 }
+
             }
 
             Kit kit;
@@ -380,6 +440,7 @@ public class EssentialsHook {
             } catch (Exception error) {
 
                 return "Invalid kit name";
+
             }
 
             long time;
@@ -390,11 +451,13 @@ public class EssentialsHook {
             } catch (Exception error) {
 
                 return "-1";
+
             }
 
             if (time <= System.currentTimeMillis()) {
 
                 return raw ? "0" : DateUtil.formatDateDiff(System.currentTimeMillis());
+
             }
 
             if (raw) {
@@ -404,14 +467,18 @@ public class EssentialsHook {
             } else {
 
                 return DateUtil.formatDateDiff(time);
+
             }
+
         });
 
         // has_kit:kitname
         UtilitiesOG.registerAudiencePlaceholder("essentials_has_kit", (player, args) -> {
+
             if (args.size() < 1) {
 
                 return "false";
+
             }
 
             String kit = args.get(0);
@@ -419,22 +486,27 @@ public class EssentialsHook {
             if (oPlayer == null) {
 
                 return "false";
+
             }
 
             return oPlayer.hasPermission("essentials.kits." + kit) ? "true" : "false";
+
         });
 
         // home:number
         UtilitiesOG.registerAudiencePlaceholder("essentials_home", (player, args) -> {
+
             if (args.size() < 1) {
 
                 return "";
+
             }
 
             Integer homeNumber = Ints.tryParse(args.get(0).replaceAll("\\D+", ""));
             if (homeNumber == null) {
 
                 return "";
+
             }
 
             homeNumber -= 1;
@@ -443,6 +515,7 @@ public class EssentialsHook {
             if (homeNumber >= user.getHomes().size() || homeNumber < 0) {
 
                 return "";
+
             }
 
             String homeName = user.getHomes().get(homeNumber);
@@ -451,22 +524,27 @@ public class EssentialsHook {
             if (args.size() == 1 && args.get(0).matches("\\w+_\\d+")) {
 
                 return homeName;
+
             }
 
             return "";
+
         });
 
         // home:number:coord (w/x/y/z)
         UtilitiesOG.registerAudiencePlaceholder("essentials_home_coord", (player, args) -> {
+
             if (args.size() < 2) {
 
                 return "";
+
             }
 
             Integer homeNumber = Ints.tryParse(args.get(0).replaceAll("\\D+", ""));
             if (homeNumber == null) {
 
                 return "";
+
             }
 
             homeNumber -= 1;
@@ -475,6 +553,7 @@ public class EssentialsHook {
             if (homeNumber >= user.getHomes().size() || homeNumber < 0) {
 
                 return "";
+
             }
 
             String homeName = user.getHomes().get(homeNumber);
@@ -485,6 +564,7 @@ public class EssentialsHook {
                 String coord = args.get(1).toLowerCase();
 
                 switch (coord) {
+
                     case "w":
                         return home.getWorld().getName();
                     case "x":
@@ -495,16 +575,20 @@ public class EssentialsHook {
                         return coordsFormat.format(home.getZ());
                     default:
                         return "";
+
                 }
 
             } catch (Exception error) {
 
                 return "";
+
             }
+
         });
 
         // worth[:material]
         UtilitiesOG.registerAudiencePlaceholder("essentials_worth", (player, args) -> {
+
             ItemStack item;
             if (args.size() >= 1 && !args.get(0).isEmpty()) {
 
@@ -512,6 +596,7 @@ public class EssentialsHook {
                 if (material == null) {
 
                     return "";
+
                 }
 
                 item = new ItemStack(material, 1);
@@ -522,25 +607,31 @@ public class EssentialsHook {
                 if (oPlayer == null) {
 
                     return "";
+
                 }
 
                 ItemStack inHand = oPlayer.getInventory().getItemInMainHand();
                 if (inHand.getType() == Material.AIR) {
 
                     return "";
+
                 }
 
                 item = inHand;
+
             }
 
             BigDecimal worth = essentials.getWorth().getPrice(essentials, item);
             if (worth == null) {
 
                 return "";
+
             }
 
             return String.valueOf(worth.doubleValue());
+
         });
+
     }
 
     /**
@@ -550,151 +641,190 @@ public class EssentialsHook {
 
         // is_clearinventory_confirm
         UtilitiesOG.registerAudiencePlaceholder("essentials_is_clearinventory_confirm", player -> {
+
             if (player == null) {
 
                 return "false";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isPromptingClearConfirm() ? "true" : "false";
+
         });
 
         // is_pay_confirm
         UtilitiesOG.registerAudiencePlaceholder("essentials_is_pay_confirm", player -> {
+
             if (player == null) {
 
                 return "false";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isPromptingPayConfirm() ? "true" : "false";
+
         });
 
         // is_pay_enabled
         UtilitiesOG.registerAudiencePlaceholder("essentials_is_pay_enabled", player -> {
+
             if (player == null) {
 
                 return "false";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isAcceptingPay() ? "true" : "false";
+
         });
 
         // is_teleport_enabled
         UtilitiesOG.registerAudiencePlaceholder("essentials_is_teleport_enabled", player -> {
+
             if (player == null) {
 
                 return "false";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isTeleportEnabled() ? "true" : "false";
+
         });
 
         // is_muted
         UtilitiesOG.registerAudiencePlaceholder("essentials_is_muted", player -> {
+
             if (player == null) {
 
                 return "false";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isMuted() ? "true" : "false";
+
         });
 
         // vanished
         UtilitiesOG.registerAudiencePlaceholder("essentials_vanished", player -> {
+
             if (player == null) {
+
                 return "false";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isVanished() ? "true" : "false";
+
         });
 
         // afk
         UtilitiesOG.registerAudiencePlaceholder("essentials_afk", player -> {
+
             if (player == null) {
 
                 return "false";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isAfk() ? "true" : "false";
+
         });
 
         // afk_reason
         UtilitiesOG.registerAudiencePlaceholder("essentials_afk_reason", player -> {
+
             if (player == null) {
 
                 return "";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
             if (user.getAfkMessage() == null) {
 
                 return "";
+
             }
 
             return UtilitiesOG.trueogExpand(user.getAfkMessage()).content();
+
         });
 
         // afk_player_count
         UtilitiesOG.registerGlobalPlaceholder("essentials_afk_player_count", args -> {
+
             long count = essentials.getUsers().getUserCount();
 
             return String.valueOf(count);
+
         });
 
         // msg_ignore
         UtilitiesOG.registerAudiencePlaceholder("essentials_msg_ignore", player -> {
+
             if (player == null) {
 
                 return "false";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isIgnoreMsg() ? "true" : "false";
+
         });
 
         // fly
         UtilitiesOG.registerAudiencePlaceholder("essentials_fly", player -> {
+
             if (player == null) {
 
                 return "false";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.getBase().getAllowFlight() ? "true" : "false";
+
         });
 
         // nickname
         UtilitiesOG.registerAudiencePlaceholder("essentials_nickname", player -> {
+
             if (player == null) {
 
                 return "";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.getNickname() != null ? user.getNickname() : player.getName();
+
         });
 
         // nickname_stripped
         UtilitiesOG.registerAudiencePlaceholder("essentials_nickname_stripped", player -> {
+
             if (player == null) {
 
                 return "";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
@@ -702,119 +832,146 @@ public class EssentialsHook {
             String nickname = user.getNickname() != null ? user.getNickname() : player.getName();
 
             return UtilitiesOG.stripFormatting(nickname);
+
         });
 
         // muted_time_remaining
         UtilitiesOG.registerAudiencePlaceholder("essentials_muted_time_remaining", player -> {
+
             if (player == null) {
 
                 return "";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isMuted() ? DateUtil.formatDateDiff(user.getMuteTimeout()) : "";
+
         });
 
         // geolocation
         UtilitiesOG.registerAudiencePlaceholder("essentials_geolocation", player -> {
+
             if (player == null) {
 
                 return "";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.getGeoLocation() != null ? user.getGeoLocation() : "";
+
         });
 
         // godmode
         UtilitiesOG.registerAudiencePlaceholder("essentials_godmode", player -> {
+
             if (player == null) {
 
                 return "false";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isGodModeEnabled() ? "true" : "false";
+
         });
 
         // unique
         UtilitiesOG.registerGlobalPlaceholder("essentials_unique", args -> {
+
             return NumberFormat.getInstance().format(essentials.getUsers());
+
         });
 
         // homes_set
         UtilitiesOG.registerAudiencePlaceholder("essentials_homes_set", player -> {
+
             if (player == null) {
 
                 return "0";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
-            return user.getHomes().isEmpty()
-                    ? "0"
-                    : String.valueOf(user.getHomes().size());
+            return user.getHomes().isEmpty() ? "0" : String.valueOf(user.getHomes().size());
+
         });
 
         // homes_max
         UtilitiesOG.registerAudiencePlaceholder("essentials_homes_max", player -> {
+
             if (player == null) {
 
                 return "0";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return String.valueOf(essentials.getSettings().getHomeLimit(user));
+
         });
 
         // jailed
         UtilitiesOG.registerAudiencePlaceholder("essentials_jailed", player -> {
+
             if (player == null) {
 
                 return "false";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isJailed() ? "true" : "false";
+
         });
 
         // jailed_time_remaining
         UtilitiesOG.registerAudiencePlaceholder("essentials_jailed_time_remaining", player -> {
+
             if (player == null) {
 
                 return "";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isJailed() ? user.getFormattedJailTime() : "";
+
         });
 
         // pm_recipient
         UtilitiesOG.registerAudiencePlaceholder("essentials_pm_recipient", player -> {
+
             if (player == null) {
 
                 return "";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
 
             return user.getReplyRecipient() != null ? user.getReplyRecipient().getName() : "";
+
         });
 
         // safe_online
         UtilitiesOG.registerGlobalPlaceholder("essentials_safe_online", args -> {
+
             long count = StreamSupport.stream(essentials.getOnlineUsers().spliterator(), false)
-                    .filter(user -> !user.isHidden())
-                    .count();
+                    .filter(user -> !user.isHidden()).count();
 
             return String.valueOf(count);
+
         });
+
     }
 
     /**
@@ -824,9 +981,11 @@ public class EssentialsHook {
 
         // world_date
         UtilitiesOG.registerAudiencePlaceholder("essentials_world_date", player -> {
+
             if (player == null) {
 
                 return "";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
@@ -836,13 +995,16 @@ public class EssentialsHook {
 
             return DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
                     .format(DescParseTickFormat.ticksToDate(worldTime));
+
         });
 
         // world_time
         UtilitiesOG.registerAudiencePlaceholder("essentials_world_time", player -> {
+
             if (player == null) {
 
                 return "";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
@@ -850,13 +1012,16 @@ public class EssentialsHook {
             long worldTime = user.getWorld() == null ? 0 : user.getWorld().getTime();
 
             return DescParseTickFormat.format12(worldTime);
+
         });
 
         // world_time_24
         UtilitiesOG.registerAudiencePlaceholder("essentials_world_time_24", player -> {
+
             if (player == null) {
 
                 return "";
+
             }
 
             User user = essentials.getUser(player.getUniqueId());
@@ -864,7 +1029,9 @@ public class EssentialsHook {
             long worldTime = user.getWorld() == null ? 0 : user.getWorld().getTime();
 
             return DescParseTickFormat.format24(worldTime);
+
         });
+
     }
 
     /**
@@ -881,6 +1048,7 @@ public class EssentialsHook {
         format.setMinimumFractionDigits(0);
 
         return format.format(d);
+
     }
 
     /**
@@ -894,32 +1062,41 @@ public class EssentialsHook {
         if (d < 1_000L) {
 
             return format(d);
+
         }
 
         if (d < 1_000_000L) {
 
             return format(d / 1_000L) + k;
+
         }
 
         if (d < 1_000_000_000L) {
 
             return format(d / 1_000_000L) + m;
+
         }
 
         if (d < 1_000_000_000_000L) {
 
             return format(d / 1_000_000_000L) + b;
+
         }
 
         if (d < 1_000_000_000_000_000L) {
 
             return format(d / 1_000_000_000_000L) + t;
+
         }
+
         if (d < 1_000_000_000_000_000_000L) {
 
             return format(d / 1_000_000_000_000_000L) + q;
+
         }
 
         return String.valueOf(d);
+
     }
+
 }
