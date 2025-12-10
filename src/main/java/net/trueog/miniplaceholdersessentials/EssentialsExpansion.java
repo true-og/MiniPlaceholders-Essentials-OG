@@ -27,8 +27,6 @@ public class EssentialsExpansion extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        saveDefaultConfig();
-
         // Register the hook.
         new EssentialsHook();
 
