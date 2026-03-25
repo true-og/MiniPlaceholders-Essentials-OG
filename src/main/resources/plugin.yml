@@ -5,4 +5,4 @@ website: https://github.com/true-og/MiniPlaceholders-Essentials
 version: '${version}'
 api-version: '${apiVersion}'
 main: net.trueog.miniplaceholdersessentials.EssentialsExpansion
-depend: [Utilities-OG, Essentials]
+depend: [Utilities-OG, Essentials-OG]
