@@ -58,8 +58,8 @@ public class EssentialsHook {
      */
     public boolean canRegister() {
 
-        return Bukkit.getPluginManager().getPlugin("Essentials") != null
-                && Bukkit.getPluginManager().getPlugin("Essentials").isEnabled();
+        return Bukkit.getPluginManager().getPlugin("Essentials-OG") != null
+                && Bukkit.getPluginManager().getPlugin("Essentials-OG").isEnabled();
 
     }
 
@@ -71,7 +71,7 @@ public class EssentialsHook {
     public boolean register() {
 
         // Initialize formatting suffixes from config
-        essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+        essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials-OG");
 
         // Initialize formatting suffixes from Essentials' config
         k = essentials.getConfig().getString("formatting.thousands", "k");
@@ -81,7 +81,7 @@ public class EssentialsHook {
         q = essentials.getConfig().getString("formatting.quadrillions", "q");
 
         // Initialize Essentials and BalanceTop
-        essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+        essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials-OG");
         if (essentials != null && essentials.isEnabled()) {
 
             baltop = essentials.getBalanceTop();

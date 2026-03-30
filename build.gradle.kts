@@ -52,7 +52,7 @@ dependencies {
     compileOnly("org.purpurmc.purpur:purpur-api:1.19.4-R0.1-SNAPSHOT") // Declare Purpur API version to be packaged.
     compileOnly("io.github.miniplaceholders:miniplaceholders-api:2.2.3") // Import MiniPlaceholders API.
     compileOnlyApi(project(":libs:Utilities-OG")) // Import TrueOG Network Utilities-OG Java API (from source).
-    compileOnly("net.essentialsx:EssentialsX:2.20.1") {
+    compileOnly("net.essentialsx:EssentialsX:2.21.0") {
         exclude(group = "org.bstats", module = "bstats-bukkit") // Exclude bstats.
     }
 }
