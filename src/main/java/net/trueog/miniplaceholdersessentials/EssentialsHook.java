@@ -6,40 +6,25 @@ import com.earth2me.essentials.User;
 import com.earth2me.essentials.utils.DateUtil;
 import com.earth2me.essentials.utils.DescParseTickFormat;
 import com.google.common.primitives.Ints;
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.StreamSupport;
-import net.essentialsx.api.v2.services.BalanceTop;
 import net.trueog.utilitiesog.UtilitiesOG;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class EssentialsHook {
 
-    private String k;
-    private String m;
-    private String b;
-    private String t;
-    private String q;
-    private final DecimalFormat format = new DecimalFormat("#,###");
     private final DecimalFormat coordsFormat = new DecimalFormat("#.###");
 
     private Essentials essentials;
-    private BalanceTop baltop;
 
     public EssentialsHook() {
 
@@ -70,240 +55,20 @@ public class EssentialsHook {
      */
     public boolean register() {
 
-        // Initialize formatting suffixes from config
         essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials-OG");
 
-        // Initialize formatting suffixes from Essentials' config
-        k = essentials.getConfig().getString("formatting.thousands", "k");
-        m = essentials.getConfig().getString("formatting.millions", "m");
-        b = essentials.getConfig().getString("formatting.billions", "b");
-        t = essentials.getConfig().getString("formatting.trillions", "t");
-        q = essentials.getConfig().getString("formatting.quadrillions", "q");
-
-        // Initialize Essentials and BalanceTop
-        essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials-OG");
-        if (essentials != null && essentials.isEnabled()) {
-
-            baltop = essentials.getBalanceTop();
-
-            baltop.calculateBalanceTopMapAsync();
-
-        } else {
+        if (essentials == null || !essentials.isEnabled()) {
 
             return false;
 
         }
 
         // Register all MiniPlaceholders.
-        registerBaltopPlaceholders();
         registerPlayerPlaceholders();
         registerUserStatePlaceholders();
         registerWorldPlaceholders();
 
         return true;
-
-    }
-
-    /**
-     * Registers all BalanceTop related MiniPlaceholders.
-     */
-    private void registerBaltopPlaceholders() {
-
-        // baltop_balance_fixed:id
-        UtilitiesOG.registerGlobalPlaceholder("essentials_baltop_balance_fixed", args -> {
-
-            if (args.size() < 1) {
-
-                return "0";
-
-            }
-
-            Integer id = Ints.tryParse(args.get(0));
-            if (id == null) {
-
-                return "Invalid ID";
-
-            }
-
-            Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
-            BalanceTop.Entry[] entries = baltopCache.values().toArray(new BalanceTop.Entry[0]);
-            if (id >= entries.length || id < 0) {
-
-                return "0";
-
-            }
-
-            return String.valueOf(entries[id].getBalance().longValue());
-
-        });
-
-        // baltop_balance_formatted:id
-        UtilitiesOG.registerGlobalPlaceholder("essentials_baltop_balance_formatted", args -> {
-
-            if (args.size() < 1) {
-
-                return "0";
-
-            }
-
-            Integer id = Ints.tryParse(args.get(0));
-            if (id == null) {
-
-                return "Invalid ID";
-
-            }
-
-            Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
-
-            BalanceTop.Entry[] entries = baltopCache.values().toArray(new BalanceTop.Entry[0]);
-            if (id >= entries.length || id < 0) {
-
-                return "0";
-
-            }
-
-            return fixMoney(entries[id].getBalance().doubleValue());
-
-        });
-
-        // baltop_balance_commas:id
-        UtilitiesOG.registerGlobalPlaceholder("essentials_baltop_balance_commas", args -> {
-
-            if (args.size() < 1) {
-
-                return "0";
-
-            }
-
-            Integer id = Ints.tryParse(args.get(0));
-            if (id == null) {
-
-                return "Invalid ID";
-
-            }
-
-            Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
-            BalanceTop.Entry[] entries = baltopCache.values().toArray(new BalanceTop.Entry[0]);
-            if (id >= entries.length || id < 0) {
-
-                return "0";
-
-            }
-
-            return format.format(entries[id].getBalance().doubleValue());
-
-        });
-
-        // baltop_balance:id
-        UtilitiesOG.registerGlobalPlaceholder("essentials_baltop_balance", args -> {
-
-            if (args.size() < 1) {
-
-                return "0";
-
-            }
-
-            Integer id = Ints.tryParse(args.get(0));
-            if (id == null) {
-
-                return "Invalid ID";
-
-            }
-
-            Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
-
-            BalanceTop.Entry[] entries = baltopCache.values().toArray(new BalanceTop.Entry[0]);
-
-            if (id >= entries.length || id < 0) {
-
-                return "0";
-
-            }
-
-            return String.valueOf(entries[id].getBalance().doubleValue());
-
-        });
-
-        // baltop_player:id
-        UtilitiesOG.registerGlobalPlaceholder("essentials_baltop_player", args -> {
-
-            if (args.size() < 1) {
-
-                return "";
-
-            }
-
-            Integer id = Ints.tryParse(args.get(0));
-            if (id == null) {
-
-                return "Invalid ID";
-
-            }
-
-            Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
-
-            BalanceTop.Entry[] entries = baltopCache.values().toArray(new BalanceTop.Entry[0]);
-
-            if (id >= entries.length || id < 0) {
-
-                return "0";
-
-            }
-
-            return entries[id].getDisplayName();
-
-        });
-
-        // baltop_player_stripped:id
-        UtilitiesOG.registerGlobalPlaceholder("essentials_baltop_player_stripped", args -> {
-
-            if (args.size() < 1) {
-
-                return "";
-
-            }
-
-            Integer id = Ints.tryParse(args.get(0));
-            if (id == null) {
-
-                return "Invalid ID";
-
-            }
-
-            Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
-
-            BalanceTop.Entry[] entries = baltopCache.values().toArray(new BalanceTop.Entry[0]);
-            if (id >= entries.length || id < 0) {
-
-                return "0";
-
-            }
-
-            String displayName = entries[id].getDisplayName();
-
-            return UtilitiesOG.stripFormatting(displayName);
-
-        });
-
-        // baltop_rank (requires player context)
-        UtilitiesOG.registerAudiencePlaceholder("essentials_baltop_rank", player -> {
-
-            if (player == null) {
-
-                return "";
-
-            }
-
-            Map<UUID, BalanceTop.Entry> baltopCache = baltop.getBalanceTopCache();
-            if (!baltopCache.containsKey(player.getUniqueId())) {
-
-                return "";
-
-            }
-
-            return String.valueOf(new ArrayList<>(baltopCache.keySet()).indexOf(player.getUniqueId()) + 1);
-
-        });
 
     }
 
@@ -482,14 +247,13 @@ public class EssentialsHook {
             }
 
             String kit = args.get(0);
-            Player oPlayer = player;
-            if (oPlayer == null) {
+            if (player == null) {
 
                 return "false";
 
             }
 
-            return oPlayer.hasPermission("essentials.kits." + kit) ? "true" : "false";
+            return player.hasPermission("essentials.kits." + kit) ? "true" : "false";
 
         });
 
@@ -586,52 +350,6 @@ public class EssentialsHook {
 
         });
 
-        // worth[:material]
-        UtilitiesOG.registerAudiencePlaceholder("essentials_worth", (player, args) -> {
-
-            ItemStack item;
-            if (args.size() >= 1 && !args.get(0).isEmpty()) {
-
-                Material material = Material.getMaterial(args.get(0).toUpperCase());
-                if (material == null) {
-
-                    return "";
-
-                }
-
-                item = new ItemStack(material, 1);
-
-            } else {
-
-                Player oPlayer = player;
-                if (oPlayer == null) {
-
-                    return "";
-
-                }
-
-                ItemStack inHand = oPlayer.getInventory().getItemInMainHand();
-                if (inHand.getType() == Material.AIR) {
-
-                    return "";
-
-                }
-
-                item = inHand;
-
-            }
-
-            BigDecimal worth = essentials.getWorth().getPrice(essentials, item);
-            if (worth == null) {
-
-                return "";
-
-            }
-
-            return String.valueOf(worth.doubleValue());
-
-        });
-
     }
 
     /**
@@ -651,36 +369,6 @@ public class EssentialsHook {
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isPromptingClearConfirm() ? "true" : "false";
-
-        });
-
-        // is_pay_confirm
-        UtilitiesOG.registerAudiencePlaceholder("essentials_is_pay_confirm", player -> {
-
-            if (player == null) {
-
-                return "false";
-
-            }
-
-            User user = essentials.getUser(player.getUniqueId());
-
-            return user.isPromptingPayConfirm() ? "true" : "false";
-
-        });
-
-        // is_pay_enabled
-        UtilitiesOG.registerAudiencePlaceholder("essentials_is_pay_enabled", player -> {
-
-            if (player == null) {
-
-                return "false";
-
-            }
-
-            User user = essentials.getUser(player.getUniqueId());
-
-            return user.isAcceptingPay() ? "true" : "false";
 
         });
 
@@ -711,21 +399,6 @@ public class EssentialsHook {
             User user = essentials.getUser(player.getUniqueId());
 
             return user.isMuted() ? "true" : "false";
-
-        });
-
-        // vanished
-        UtilitiesOG.registerAudiencePlaceholder("essentials_vanished", player -> {
-
-            if (player == null) {
-
-                return "false";
-
-            }
-
-            User user = essentials.getUser(player.getUniqueId());
-
-            return user.isVanished() ? "true" : "false";
 
         });
 
@@ -1031,71 +704,6 @@ public class EssentialsHook {
             return DescParseTickFormat.format24(worldTime);
 
         });
-
-    }
-
-    /**
-     * Formats a double value with English locale and up to two decimal places.
-     *
-     * @param d The double value to format.
-     * @return The formatted string.
-     */
-    private String format(double d) {
-
-        NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
-
-        format.setMaximumFractionDigits(2);
-        format.setMinimumFractionDigits(0);
-
-        return format.format(d);
-
-    }
-
-    /**
-     * Converts a double value into a shortened money format using suffixes.
-     *
-     * @param d The double value to format.
-     * @return The formatted money string.
-     */
-    private String fixMoney(double d) {
-
-        if (d < 1_000L) {
-
-            return format(d);
-
-        }
-
-        if (d < 1_000_000L) {
-
-            return format(d / 1_000L) + k;
-
-        }
-
-        if (d < 1_000_000_000L) {
-
-            return format(d / 1_000_000L) + m;
-
-        }
-
-        if (d < 1_000_000_000_000L) {
-
-            return format(d / 1_000_000_000L) + b;
-
-        }
-
-        if (d < 1_000_000_000_000_000L) {
-
-            return format(d / 1_000_000_000_000L) + t;
-
-        }
-
-        if (d < 1_000_000_000_000_000_000L) {
-
-            return format(d / 1_000_000_000_000_000L) + q;
-
-        }
-
-        return String.valueOf(d);
 
     }
 
